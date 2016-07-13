@@ -13,6 +13,6 @@ object VersionUtil {
    *  commit, albeit extremely large projects - such as the Linux kernel - need
    *  more letters to stay unique
    */
-  def gitHash = executeScript("get-scala-commit-sha").substring(0, 7)
+  def commitHash = executeScript("get-scala-commit-sha").substring(0, 7)
   def commitDate = executeScript("get-scala-commit-date")
 }

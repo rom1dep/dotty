@@ -10,7 +10,11 @@
 
 [[ $# -eq 0 ]] || cd "$1"
 
-lastcommitdate=$(git log --format="%ci" HEAD | head -n 1 | cut -d ' ' -f 1)
+if [ -d .git ] || git rev-parse --is-inside-git-dir > /dev/null 2>&1 ; then
+  lastcommitdate=$(git log --format="%ci" HEAD | head -n 1 | cut -d ' ' -f 1)
+elif [ -d ".hg" ] || hg root > /dev/null ; then
+  lastcommitdate=$(HGPLAIN= hg log -r . -T "{date|shortdate}")
+fi
 
 # 20120324
 echo "${lastcommitdate//-/}"

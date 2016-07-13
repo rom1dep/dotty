@@ -471,7 +471,7 @@ object Build {
         val contents =                //2.11.11.v20170413-090219-8a413ba7cc
           s"""version.number=${version.value}
              |maven.version.number=${version.value}
-             |git.hash=${VersionUtil.gitHash}
+             |commit.hash=${VersionUtil.commitHash}
              |copyright.string=Copyright 2002-${Calendar.getInstance().get(Calendar.YEAR)}, LAMP/EPFL
            """.stripMargin
 
@@ -510,7 +510,7 @@ object Build {
       parallelExecution in Test := false,
 
       // Add git-hash used to package the distribution to the manifest to know it in runtime and report it in REPL
-      packageOptions += ManifestAttributes(("Git-Hash", VersionUtil.gitHash)),
+      packageOptions += ManifestAttributes(("Commit-Hash", VersionUtil.commitHash)),
 
       // http://grokbase.com/t/gg/simple-build-tool/135ke5y90p/sbt-setting-jvm-boot-paramaters-for-scala
       // packageAll should always be run before tests
