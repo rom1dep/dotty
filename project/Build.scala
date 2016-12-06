@@ -47,7 +47,7 @@ object Build {
     val isNightly = sys.env.get("NIGHTLYBUILD") == Some("yes")
     val isRelease = sys.env.get("RELEASEBUILD") == Some("yes")
     if (isNightly)
-      baseVersion + "-bin-" + VersionUtil.commitDate + "-" + VersionUtil.gitHash + "-NIGHTLY"
+      baseVersion + "-bin-" + VersionUtil.commitDate + "-" + VersionUtil.commitHash + "-NIGHTLY"
     else if (isRelease)
       baseVersion
     else
@@ -509,7 +509,14 @@ object Build {
       fork in Test := true,
       parallelExecution in Test := false,
 
-      // Add git-hash used to package the distribution to the manifest to know it in runtime and report it in REPL
+      // Provide a commit-hash, used for packaging purposes (as part of the manifest information), also reported it in REPL
+      //
+      // Since building dotty should not depend on any specific version control system, the get-scala-commit-sha
+      // script abstracts away the obtaining of a commit-hash for several common VCSes (so far git and mercurial are
+      // supported). Since Github is currently the platform used for most project interactions, the user-facing hashes
+      // will be showing git hashes only.
+      // If the project decides to move to another hosting service, or VCS, the subsequent changes should ideally only
+      // take place in get-scala-commit and this build file should as much as possible remain tooling-agnostic.
       packageOptions += ManifestAttributes(("Commit-Hash", VersionUtil.commitHash)),
 
       // http://grokbase.com/t/gg/simple-build-tool/135ke5y90p/sbt-setting-jvm-boot-paramaters-for-scala
